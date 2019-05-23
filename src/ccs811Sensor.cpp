@@ -5,6 +5,7 @@ UnifiedSensor_t ccs811Sensor::measureData(uint32_t currentMilliseconds)
     UnifiedSensor_t data;
     ccs.readData();
     data.sensorType = S_TYPE_CCS811;
+
     data.temperature = ccs.calculateTemperature();
     data.tvoc = ccs.getTVOC();
     return data;
@@ -29,11 +30,12 @@ void ccs811Sensor::calibrate()
         delay(500);
     }
     Serial.println(F("[OK]"));
-    /*float temp = getTemp();
-    ccs.setTempOffset(temp - 25.0);*/
+    float temp = getTemp();
+    float humidity = getHumidity();
+    ccs.setEnvironmentalData(humidity, temp);
 
     float ccsTemp = ccs.calculateTemperature();
     Serial.print(F("CCS811 calibration Temperature: "));
     Serial.println(ccsTemp);
-    ccs.setTempOffset(ccsTemp - 25.0);
+    ccs.setTempOffset(ccsTemp - 25);
 }
