@@ -7,7 +7,10 @@ class sds011Sensor : public sensor
 private:
     uint32_t lastMeasurement = 0;
     uint32_t minMeasureDelay = 0;
+    uint32_t minHeatDelay = 0;
+    bool isHeated = false;
     SDS011 sds;
+
 public:
     sds011Sensor() = default;
     ~sds011Sensor() = default;
