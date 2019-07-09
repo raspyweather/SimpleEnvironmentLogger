@@ -2,15 +2,11 @@
 #include "FS.h"
 #include "InfluxDb.h"
 
-#include "bme680Sensor.h"
-#include "bmp280Sensor.h"
+#include "bme280Sensor.h"
 #include "ccs811Sensor.h"
-#include "ds18b20Sensor.h"
-#include "dht22Sensor.h"
 #include "wifiSensor.h"
 #include "sds011Sensor.h"
 #include <ESP8266WiFi.h>
-
 
 #define INFLUXDB_HOST "influxHost"
 #define INFLUXDB_PORT 8086
@@ -25,9 +21,9 @@ void initWifi();
 
 Influxdb influx(INFLUXDB_HOST, INFLUXDB_PORT);
 
-bmp280Sensor *tempSensor;
-dht22Sensor *humiditySensor;
-sensor *sensors[7];
+bme280Sensor *tempSensor;
+bme280Sensor *humiditySensor;
+sensor *sensors[4];
 
 uint32_t lastMeasurement = 0;
 uint32_t minMeasureDelay = 10000;
@@ -42,6 +38,12 @@ float getTemp()
 float getHumidity()
 {
   return (humiditySensor->measureData(millis())).humidity;
+}
+
+int ctr = 0;
+void addSensor(sensor *sensor)
+{
+  sensors[ctr++] = sensor;
 }
 void setup()
 {
@@ -59,16 +61,13 @@ void setup()
   Serial.println("Connecting to Wifi");
   initWifi();
   connectToInflux();
-  tempSensor = new bmp280Sensor();
-  humiditySensor = new dht22Sensor();
+  tempSensor = new bme280Sensor();
+  humiditySensor = tempSensor;
   auto ccs = (new ccs811Sensor(&getTemp, &getHumidity));
-  sensors[0] = tempSensor;
-  sensors[1] = ccs;
-  sensors[2] = humiditySensor;
-  sensors[3] = (new ds18b20Sensor());
-  sensors[4] = (new wifiSensor());
-  sensors[5] = (new bme680Sensor());
-  sensors[6] = (new sds011Sensor());
+  addSensor(tempSensor);
+  addSensor(ccs);
+  addSensor(new wifiSensor());
+  addSensor(new sds011Sensor());
 
   Serial.println(F("Initialization started"));
   for (int i = 0; i < sensorsLength; i++)
@@ -146,6 +145,8 @@ void PrepareForInflux(UnifiedSensor_t sensorData)
   }
   if (ctr == 0)
   {
+    Serial.print(sensorNames[sensorData.sensorType]);
+    Serial.print(F(" has no data!\n"));
     return;
   }
   influx.prepare(measurement);
