@@ -1,4 +1,3 @@
-#define DHTPIN D5
 #include "sensor.h"
 #include "DHT.h"
 #include <cstdint>

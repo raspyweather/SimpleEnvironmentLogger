@@ -1,7 +1,7 @@
 #include "dht22Sensor.h"
 void dht22Sensor::init()
 {
-    dht.setup(D5, DHT::DHT22);
+    dht.setup(D3, DHT::DHT22);
     minMeasureDelay = dht.getMinimumSamplingPeriod();
 }
 
