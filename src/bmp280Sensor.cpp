@@ -21,6 +21,9 @@ UnifiedSensor_t bmp280Sensor::measureData(uint32_t milliseconds)
     data.sensorType = S_TYPE_BMP280;
     data.temperature = bmp.readTemperature();
     data.pressure = bmp.readPressure() / 100;
+    if(data.temperature<-140){
+        ESP.restart();
+    }
     return data;
 }
 float bmp280Sensor::getTemp()
