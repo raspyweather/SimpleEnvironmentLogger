@@ -17,14 +17,21 @@ void sds011Sensor::init()
 UnifiedSensor_t sds011Sensor::measureData(uint32_t currentMilliseconds)
 {
     UnifiedSensor_t data;
+    data.sensorType = S_TYPE_INVALID;
     if (currentMilliseconds - lastMeasurement > minMeasureDelay)
     {
         lastMeasurement = currentMilliseconds;
         if (isHeated)
         {
-            Serial.println("Measuring SDS");
+            Serial.println("Measuring SDS ");
             data.sensorType = S_TYPE_SDS011;
             sds.read(&data.PM2_5, &data.PM10);
+            if (isnan(data.PM2_5) || isnan(data.PM10))
+            {
+                Serial.println("No Data available, retry.");
+                minMeasureDelay = 1000;
+                return data;
+            }
             sds.sleep();
             isHeated = false;
             minMeasureDelay = MEASUREDELAY;
@@ -38,6 +45,5 @@ UnifiedSensor_t sds011Sensor::measureData(uint32_t currentMilliseconds)
             sds.wakeup();
         }
     }
-    data.sensorType = S_TYPE_INVALID;
     return data;
 }
