@@ -10,8 +10,9 @@ const String sensorNames[] = {
     "DHT22",
     "ESP8266",
     "BME680",
+    "SDS011",
     "BH1750",
-    "SDS011"};
+    "BME280"};
 typedef enum
 {
     S_TYPE_UNKNOWN = 0,
@@ -23,6 +24,7 @@ typedef enum
     S_TYPE_BME680,
     S_TYPE_SDS011,
     S_TYPE_BH1750,
+    S_TYPE_BME280,
     S_TYPE_INVALID
 } SensorType_t;
 
