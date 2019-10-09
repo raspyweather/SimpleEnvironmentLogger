@@ -10,6 +10,7 @@ const String sensorNames[] = {
     "DHT22",
     "ESP8266",
     "BME680",
+    "BH1750",
     "SDS011"};
 typedef enum
 {
@@ -21,6 +22,7 @@ typedef enum
     S_TYPE_WIFI,
     S_TYPE_BME680,
     S_TYPE_SDS011,
+    S_TYPE_BH1750,
     S_TYPE_INVALID
 } SensorType_t;
 
@@ -34,4 +36,5 @@ typedef struct
     float PM2_5 = NAN;
     float PM10 = NAN;
     float signalStrength = NAN;
+    float lightIntensity = NAN;
 } UnifiedSensor_t;
