@@ -1,5 +1,4 @@
 #include "bme680Sensor.h"
-#include "../lib/bme680.h"
 void bme680Sensor::init()
 {
     Serial.print(F("Connecting to BME680"));

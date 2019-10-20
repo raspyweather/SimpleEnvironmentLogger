@@ -151,51 +151,7 @@ void PrepareForInflux(UnifiedSensor_t sensorData)
   influx.prepare(measurement);
 }
 
-void viewData(UnifiedSensor_t sensorData)
-{
-  if (sensorData.sensorType == S_TYPE_INVALID)
-  {
-    return;
-  }
-  Serial.print(sensorNames[sensorData.sensorType]);
-  Serial.print(F(" "));
-  if (!isnan(sensorData.humidity))
-  {
-    Serial.print(sensorData.humidity);
-    Serial.print(F("%,"));
-  }
-  if (!isnan(sensorData.temperature))
-  {
-    Serial.print(sensorData.temperature);
-    Serial.print(F("°C,"));
-  }
-  if (!isnan(sensorData.pressure))
-  {
-    Serial.print(sensorData.pressure);
-    Serial.print(F("hPa,"));
-  }
-  if (!isnan(sensorData.tvoc))
-  {
-    Serial.print(sensorData.tvoc);
-    Serial.print(F(""));
-  }
-  if (!isnan(sensorData.signalStrength))
-  {
-    Serial.print(sensorData.signalStrength);
-    Serial.print(F(""));
-  }
-  if (!isnan(sensorData.PM10))
-  {
-    Serial.print(sensorData.PM10);
-    Serial.print(F(" PM10 "));
-  }
-  if (!isnan(sensorData.PM2_5))
-  {
-    Serial.print(sensorData.PM2_5);
-    Serial.print(F(" PM2.5 "));
-  }
-  Serial.println();
-}
+
 
 void loop()
 {
@@ -206,7 +162,6 @@ void loop()
     for (int i = 0; i < sensorsLength; i++)
     {
       auto data = sensors[i]->measureData(millis());
-      viewData(data);
       PrepareForInflux(data);
     }
     digitalWrite(LED_BUILTIN, (blinkState = !blinkState) ? LOW : HIGH);
