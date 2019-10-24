@@ -15,6 +15,9 @@ public:
     void init();
     void logError(String message);
     void logWaitingTick();
+    void waitFor(boolean (*checkCondition)(),String description,int16_t maxRetries);
     void logData(uint32_t currentMilliseconds, UnifiedSensor_t data);
+    void beginWait();
+    void endWait(boolean result);
     ~serialLogger() = default;
 };
