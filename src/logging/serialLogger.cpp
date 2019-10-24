@@ -56,3 +56,16 @@ void serialLogger::logData(uint32_t currentMilliseconds, UnifiedSensor_t sensorD
 void serialLogger::logWaitingTick(){
     serialPort.print(".");
 }
+void serialLogger:: waitFor(boolean (*checkCondition)(),String description,int16_t maxTries){
+    serialPort.print(description);
+    int16_t ctr=0;
+    for(;checkCondition()|| maxTries >=ctr || ctr==-1 ;ctr++){
+        logWaitingTick();
+    }
+    if(ctr>=maxTries){
+        serialPort.print("[Failed]");
+    }
+    else{
+        serialPort.print("[Ok]");
+    }
+}
