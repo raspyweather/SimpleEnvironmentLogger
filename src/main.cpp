@@ -11,7 +11,6 @@
 #include "sds011Sensor.h"
 #include <ESP8266WiFi.h>
 
-
 #define INFLUXDB_HOST "influxHost"
 #define INFLUXDB_PORT 8086
 #define INFLUXDB_DATABASE "influxDbName"
@@ -30,7 +29,7 @@ dht22Sensor *humiditySensor;
 sensor *sensors[7];
 
 uint32_t lastMeasurement = 0;
-uint32_t minMeasureDelay = 10000;
+uint32_t minMeasureDelay = 1000;
 bool blinkState = false;
 
 int sensorsLength = sizeof(sensors) / sizeof(sensors[0]);
@@ -43,6 +42,7 @@ float getHumidity()
 {
   return (humiditySensor->measureData(millis())).humidity;
 }
+
 void setup()
 {
   Serial.begin(115200);
@@ -150,8 +150,6 @@ void PrepareForInflux(UnifiedSensor_t sensorData)
   }
   influx.prepare(measurement);
 }
-
-
 
 void loop()
 {
