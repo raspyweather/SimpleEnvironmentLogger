@@ -12,7 +12,10 @@ const String sensorNames[] = {
     "BME680",
     "SDS011",
     "BH1750",
-    "BME280"};
+    "BME280",
+    "WINDSPEED",
+    "WINDDIRECTION",
+    "WATERCOUNT"};
 typedef enum
 {
     S_TYPE_UNKNOWN = 0,
@@ -25,6 +28,9 @@ typedef enum
     S_TYPE_SDS011,
     S_TYPE_BH1750,
     S_TYPE_BME280,
+    S_TYPE_WINDSPEEDSENSOR,
+    S_TYPE_WINDDIRERCTIONSENSOR,
+    S_TYPE_WATERCOUNTER,
     S_TYPE_INVALID
 } SensorType_t;
 
@@ -39,4 +45,7 @@ typedef struct
     float PM10 = NAN;
     float signalStrength = NAN;
     float lightIntensity = NAN;
+    float windSpeed = NAN;
+    float windDirection = NAN;
+    float waterCount = NAN;
 } UnifiedSensor_t;
